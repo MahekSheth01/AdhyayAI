@@ -31,3 +31,28 @@ app.use(express.urlencoded({ extended: true }));
 
 //static folder for uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+//Routes
+
+app.use(errorHandler)
+
+//404 handler
+
+app.use((req,res)=>{
+    res.status(404).json({
+        success:false,
+        message:"API endpoint not found",
+        statusCode:404
+    })
+})
+
+//Start the server
+const PORT=process.env.PORT||8000;
+app.listen(PORT,()=>{
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+});
+
+process.on('unhandledRejection',(err)=>{
+    console.log(`Error: ${err.message}`);
+    process.exit(1);
+})
